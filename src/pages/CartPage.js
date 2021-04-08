@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { removeAllItems, removeCurrentItem, incrementItemCount, decrementItemCount } from '../redux/cart/actions';
 import CartList from '../components/Cart/CartList';
+import { cartItemsSelector, totalPriceSelector } from '../redux/cart/selectors';
 
 function CartPage({ cartItems, totalPrice, 
   removeAllItems, removeCurrentItem, incrementItemCount, decrementItemCount }) {
@@ -17,8 +18,8 @@ function CartPage({ cartItems, totalPrice,
 }
 
 const mapStateToProps = (state) => ({
-  cartItems: state.cart.cartItems,
-  totalPrice: state.cart.totalPrice
+  cartItems: cartItemsSelector(state),
+  totalPrice: totalPriceSelector(state)
 });
 
 export default connect(mapStateToProps, 

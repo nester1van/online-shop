@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'; 
+import { totalCountSelector } from '../../redux/cart/selectors';
 
 function NavBar({ totalCount }) {
 
@@ -19,7 +20,7 @@ function NavBar({ totalCount }) {
 }
 
 const mapStateToProps = (state) => ({
-  totalCount: state.cart.totalCount
+  totalCount: totalCountSelector(state)
 });
 
 export default connect(mapStateToProps)(NavBar);

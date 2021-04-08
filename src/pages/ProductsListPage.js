@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import ProductsList from '../components/ProductsList/ProductsList';
 import { getProducts } from '../redux/products/actions';
 import { addNewItem } from '../redux/cart/actions';
+import { productsListSelector } from '../redux/products/selectors';
 
 function ProductsListPage({ productsList, getProducts, addNewItem }) {
 
@@ -19,7 +20,7 @@ function ProductsListPage({ productsList, getProducts, addNewItem }) {
 }
 
 const mapStateToProps = (state) => ({
-  productsList: state.products.productsList
+  productsList: productsListSelector(state)
 });
 
 export default connect(mapStateToProps, {getProducts, addNewItem})(ProductsListPage)

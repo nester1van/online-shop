@@ -1,64 +1,45 @@
-import { INCREMENT_ITEM_COUNT, DECREMENT_ITEM_COUNT, ADD_NEW_ITEM, 
-         REMOVE_ALL_ITEMS, REMOVE_CURRENT_ITEM } from './actions';
+import {  INCREMENT_ITEM_COUNT, DECREMENT_ITEM_COUNT, ADD_NEW_ITEM, 
+  REMOVE_ALL_ITEMS, REMOVE_CURRENT_ITEM } from './actions';
 
 const initialCart = {
-  cartItems: [],
-  totalPrice: 0,
-  totalCount: 0
+  cartItems: []
 };
 
 const cart = (state = initialCart, action) => {
   const { type, name, price } = action;
-  let { cartItems, totalPrice, totalCount } = state;
+  let { cartItems } = state;
   let updatedCartItems;
   switch (type) {
     case INCREMENT_ITEM_COUNT:
       updatedCartItems = cartItems.map(item => {
-        if (item.name === name) {
-          item.count++;
-          totalPrice += item.price;
-          totalCount++;
-        } 
-        return item;
+      item.name === name && item.count++;
+      return item;
       });
-      return {cartItems: updatedCartItems, totalPrice, totalCount};
+      return {cartItems: updatedCartItems};
     case DECREMENT_ITEM_COUNT:
       updatedCartItems = cartItems.map(item => {
-        if (item.name === name) {
-          item.count--;
-          totalPrice = totalPrice - item.price;
-          totalCount--;
-        } 
-        return item;
-      }).filter(item => item.count > 0);
-      return {cartItems: updatedCartItems, totalPrice, totalCount};
-    case ADD_NEW_ITEM:
-      updatedCartItems = cartItems;
-      if (updatedCartItems.some(item => item.name === name)) {
-        updatedCartItems = updatedCartItems.map(item => {
-          if (item.name === name) {
-            item.count++;
-          }
-          return item;
-        })
-      } else {
-        updatedCartItems.push({name, price, count: 1});
-      }
-      totalPrice += price;
-      totalCount++;
-      return {cartItems: updatedCartItems, totalPrice, totalCount};
-    case REMOVE_ALL_ITEMS:
-      return {cartItems: [], totalPrice: 0, totalCount: 0};
-    case REMOVE_CURRENT_ITEM:
-      updatedCartItems = cartItems.filter(item => {
-        if (item.name === name) {
-          totalPrice -= item.price * item.count;
-          totalCount -= item.count;
-          return false;
-        }
-        return true;
+      item.name === name && item.count--;
+      return item;
       })
-      return {cartItems: updatedCartItems, totalPrice, totalCount};
+      .filter(item => item.count > 0);
+      return {cartItems: updatedCartItems};
+    case ADD_NEW_ITEM:
+      if (cartItems.some(item => item.name === name)) {
+      updatedCartItems = cartItems.map(item => {
+        if (item.name === name) {
+          item.count++;
+        }
+        return item;
+      })
+      } else {
+      updatedCartItems = [...cartItems, {name, price, count: 1}];
+      }
+      return {cartItems: updatedCartItems};
+    case REMOVE_ALL_ITEMS:
+      return {cartItems: []};
+    case REMOVE_CURRENT_ITEM:
+      updatedCartItems = cartItems.filter(item => item.name !== name); 
+      return {cartItems: updatedCartItems};
     default:
       return state;
   }

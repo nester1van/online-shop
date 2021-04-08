@@ -21,11 +21,15 @@ const getProductsErr = () => ({
   isFetching: false,
   status: 'error'
 });
+  
+let dealers = window.dealers || [];
+let query = dealers.length ? `?dealers=${dealers.join(',')}` : '';
+let url =  `https://murmuring-tor-81614.herokuapp.com/api/goods/${query}`;
 
 // async action creators
 export const getProducts = () => (dispatch) => {
   dispatch(getProductsReq());
-  return fetch('https://murmuring-tor-81614.herokuapp.com/api/goods/')
+  return fetch(url)
     .then(res => res.json())
     .then(json => dispatch(getProductsRes(json)))
     .catch(err => dispatch(getProductsErr()));
